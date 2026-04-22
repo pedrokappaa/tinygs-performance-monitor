@@ -1,0 +1,1903 @@
+[
+    {
+        "id": "4ff50634012ce664",
+        "type": "tab",
+        "label": "TinyGS",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "a0475d0b423ea9f4",
+        "type": "tls-config",
+        "name": "Certificates",
+        "cert": "",
+        "key": "",
+        "ca": "",
+        "certname": "newroot.cert",
+        "keyname": "",
+        "caname": "ISRGroot.cert",
+        "servername": "",
+        "verifyservercert": false,
+        "alpnprotocol": ""
+    },
+    {
+        "id": "d9aedb7cd949bad8",
+        "type": "mqtt-broker",
+        "name": "TinyGS",
+        "broker": "mqtt.tinygs.com",
+        "port": "8883",
+        "tls": "a0475d0b423ea9f4",
+        "clientid": "HAVC-NR",
+        "autoConnect": true,
+        "usetls": true,
+        "compatmode": false,
+        "protocolVersion": "4",
+        "keepalive": "30",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "df6090a8d11bb4d0",
+        "type": "global-config",
+        "env": [
+            {
+                "name": "TELEGRAM_USER_ID",
+                "value": "",
+                "type": "str"
+            },
+            {
+                "name": "TELEGRAM_BOT_API_KEY",
+                "value": "",
+                "type": "str"
+            },
+            {
+                "name": "TINYGS_MQTT_USER",
+                "value": "",
+                "type": "str"
+            },
+            {
+                "name": "TINYGS_MQTT_PW",
+                "value": "",
+                "type": "str"
+            },
+            {
+                "name": "N2YO_API_KEY",
+                "value": "",
+                "type": "str"
+            },
+            {
+                "name": "KEEP_TRACK_API_KEY",
+                "value": "",
+                "type": "str"
+            },
+            {
+                "name": "INFLUXDB_DB_NAME",
+                "value": "",
+                "type": "str"
+            },
+            {
+                "name": "INFLUXDB_TOKEN",
+                "value": "",
+                "type": "str"
+            },
+            {
+                "name": "GS_FULL_NAME",
+                "value": "",
+                "type": "str"
+            },
+            {
+                "name": "GS_SHORT_NAME",
+                "value": "",
+                "type": "str"
+            },
+            {
+                "name": "GS_POS_LAT",
+                "value": "",
+                "type": "num"
+            },
+            {
+                "name": "GS_POS_LON",
+                "value": "",
+                "type": "num"
+            },
+            {
+                "name": "GS_POS_ALT",
+                "value": "",
+                "type": "num"
+            }
+        ],
+        "modules": {
+            "node-red-contrib-telegrambot": "17.0.5",
+            "node-red-contrib-influxdb3": "1.0.3",
+            "node-red-contrib-influxdb3-read": "1.0.2"
+        }
+    },
+    {
+        "id": "a237809e635ce27a",
+        "type": "telegram bot",
+        "botname": "TinyGS_CCG_bot",
+        "usernames": "",
+        "chatids": "$(TELEGRAM_USER_ID)",
+        "baseapiurl": "",
+        "testenvironment": false,
+        "updatemode": "polling",
+        "pollinterval": 300,
+        "usesocks": false,
+        "sockshost": "",
+        "socksprotocol": "socks5",
+        "socksport": 6667,
+        "socksusername": "anonymous",
+        "sockspassword": "",
+        "bothost": "",
+        "botpath": "",
+        "localbothost": "0.0.0.0",
+        "localbotport": 8443,
+        "publicbotport": 8443,
+        "privatekey": "",
+        "certificate": "",
+        "useselfsignedcertificate": false,
+        "sslterminated": false,
+        "verboselogging": false
+    },
+    {
+        "id": "4616ba1674dc6547",
+        "type": "influxdb3-config",
+        "name": "Raspberry Pi",
+        "host": "http://localhost:8181",
+        "database": "$(INFLUXDB_DB_NAME)",
+        "tlsRejectUnauthorized": true,
+        "caCertPath": "$(INFLUXDB_TOKEN)"
+    },
+    {
+        "id": "8c547154cb50d8fa",
+        "type": "switch",
+        "z": "4ff50634012ce664",
+        "name": "Ignore map updates",
+        "property": "topic",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "cont",
+                "v": "sat_pos_oled",
+                "vt": "str"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 640,
+        "y": 520,
+        "wires": [
+            [
+                "2f245a51ce39c5f4"
+            ],
+            [
+                "b04aaf898645a708",
+                "e426e6ba59a27627"
+            ]
+        ]
+    },
+    {
+        "id": "b04aaf898645a708",
+        "type": "switch",
+        "z": "4ff50634012ce664",
+        "name": "Catch packet",
+        "property": "topic",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "cont",
+                "v": "cmnd/frame/0",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 890,
+        "y": 700,
+        "wires": [
+            [
+                "3daf456a12f3767a"
+            ]
+        ]
+    },
+    {
+        "id": "3daf456a12f3767a",
+        "type": "json",
+        "z": "4ff50634012ce664",
+        "name": "",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 1070,
+        "y": 700,
+        "wires": [
+            [
+                "2ac1b918be060956"
+            ]
+        ]
+    },
+    {
+        "id": "0c3541f7d12eda6a",
+        "type": "function",
+        "z": "4ff50634012ce664",
+        "name": "Next Pass (n2yo)",
+        "func": "// Save data from the MQTT message for the Telegram message\nlet gs_name = env.get(\"GS_FULL_NAME\");\n\nlet myarr = msg.topic.split(\"/\");\n\nif (myarr[2] == gs_name)\n    gs_name = env.get(\"GS_SHORT_NAME\");\n\nmsg.msg_str         = \"📡 \" + gs_name + \"\\r\\n\";\nmsg.msg_str         += \"🛰 \" + msg.payload.sat + \"\\n\";\n\nlet norad           = msg.payload.NORAD;\nlet nextdays        = \"1\";\nlet gs_lat          = env.get(\"GS_POS_LAT\");\nlet gs_lon          = env.get(\"GS_POS_LON\");\nlet gs_alt_m        = env.get(\"GS_POS_ALT\")*1000;\nlet min_elevation   = 20;\nlet apikey          = env.get(\"N2YO_API_KEY\");\n\nmsg.url = \"https://api.n2yo.com/rest/v1/satellite/radiopasses/\" + norad + \"/\" + gs_lat + \"/\" + gs_lon + \"/\" + gs_alt_m + \"/\" + nextdays + \"/\" + min_elevation + \"/&apiKey=\" + apikey;\nreturn msg;\n\n/*\nhttps://www.n2yo.com/api/#radiopasses\nhttps://api.n2yo.com/rest/v1/satellite/radiopasses/12345/0/0/0/1/0/&apiKey=\n*/",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1270,
+        "y": 600,
+        "wires": [
+            [
+                "57aa3469c35be2d8"
+            ]
+        ],
+        "info": "Get visual passes\r\nGet predicted visual passes for any satellite relative to a location on Earth. A \"visual pass\" is a pass that should be optically visible on the entire (or partial) duration of crossing the sky. For that to happen, the satellite must be above the horizon, illumintaed by Sun (not in Earth shadow), and the sky dark enough to allow visual satellite observation.\r\n\r\nRequest: /visualpasses/{id}/{observer_lat}/{observer_lng}/{observer_alt}/{days}/{min_visibility}\r\n\r\nParameter\t^    Type\tRequired\tComments\r\nid\t            integer\tYes\t NORAD id\r\nobserver_lat\tfloat\tYes\t        Observer's latitide (decimal degrees format)\r\nobserver_lng\tfloat\tYes\t        Observer's longitude (decimal degrees format)\r\nobserver_alt\tfloat\tYes\t Observer's altitude above sea level in meters\r\ndays\t    integer\tYes\t        Number of days of prediction (max 10)\r\nmin_visibility\tinteger\tYes\t        Minimum number of seconds the satellite should be considered optically visible during the pass to be returned as result\r\n\r\n"
+    },
+    {
+        "id": "e426e6ba59a27627",
+        "type": "switch",
+        "z": "4ff50634012ce664",
+        "name": "Listen next sat",
+        "property": "topic",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "cont",
+                "v": "/cmnd/begine",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 900,
+        "y": 600,
+        "wires": [
+            [
+                "3979ed247e915a93"
+            ]
+        ]
+    },
+    {
+        "id": "3979ed247e915a93",
+        "type": "json",
+        "z": "4ff50634012ce664",
+        "name": "",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 1070,
+        "y": 600,
+        "wires": [
+            [
+                "0c3541f7d12eda6a",
+                "110ddeec02631257"
+            ]
+        ]
+    },
+    {
+        "id": "57aa3469c35be2d8",
+        "type": "http request",
+        "z": "4ff50634012ce664",
+        "name": "Next Pass Request",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1510,
+        "y": 600,
+        "wires": [
+            [
+                "09cb636eaaf561c2"
+            ]
+        ]
+    },
+    {
+        "id": "37356166a249ca85",
+        "type": "mqtt in",
+        "z": "4ff50634012ce664",
+        "name": "",
+        "topic": "#",
+        "qos": "0",
+        "datatype": "auto-detect",
+        "broker": "d9aedb7cd949bad8",
+        "nl": false,
+        "rap": false,
+        "inputs": 0,
+        "x": 430,
+        "y": 520,
+        "wires": [
+            [
+                "8c547154cb50d8fa"
+            ]
+        ]
+    },
+    {
+        "id": "2f245a51ce39c5f4",
+        "type": "file",
+        "z": "4ff50634012ce664",
+        "d": true,
+        "name": "",
+        "filename": "log.txt",
+        "filenameType": "str",
+        "appendNewline": true,
+        "createDir": true,
+        "overwriteFile": "false",
+        "encoding": "none",
+        "x": 870,
+        "y": 380,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "09cb636eaaf561c2",
+        "type": "function",
+        "z": "4ff50634012ce664",
+        "name": "Identify new passes",
+        "func": "msg.msg_str = msg.msg_str || \"\";\n\nif (msg.payload.info.passescount == 0)\n{\n    msg.msg_str += \"No pass found in the next 24 hours\";\n    msg.new_pass = false;\n}\nelse if (msg.payload.info.satname == \"UNKNOWN\")\n{\n    msg.msg_str += \"Unknown satellite in N2YO\";\n    msg.new_pass = false;\n}\nelse {\n    let state_key = String(msg.payload.info.satid);\n    let last_pass_time = Number(flow.get(state_key, \"memory\")) || 0;\n    let current_pass_time = Number(msg.payload.passes[0].endUTC);\n\n    if (current_pass_time > last_pass_time)\n    {\n        flow.set(state_key, current_pass_time, \"memory\");\n        msg.new_pass = true;\n    }\n    else\n    {\n        msg.new_pass = false;\n    }\n}\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1750,
+        "y": 600,
+        "wires": [
+            [
+                "ba6f05549ae86df4"
+            ]
+        ]
+    },
+    {
+        "id": "2ac1b918be060956",
+        "type": "function",
+        "z": "4ff50634012ce664",
+        "name": "Parse packet data",
+        "func": "let sat        = msg.payload[0][4];\n//let lastPacket = msg.payload[1][4];\nlet rssiSnr    = msg.payload[2][4].replace(\"RSSI/SNR:\", \"\").replace(\"dB\",\"\");\nlet doppler    = msg.payload[3][4].replace(\"Freq error:\", \"\").replace(\"Hz\",\"\");\nlet status     = msg.payload[4][4];\n\nlet [rssi, snr] = rssiSnr.split(\"/\");\n\nmsg.msg_str = \"🛰\" + sat + \" \\r\\n\";\nmsg.msg_str += \"📶 RSSI: \" + rssi + \" dBm \\r\\n\";\nmsg.msg_str += \"📡 SNR: \" + snr + \" dB \\r\\n\";\nmsg.msg_str += \"🎯 Doppler: \" + doppler + \" Hz \\r\\n\";\nmsg.msg_str += \"📌 \" + status + \"\\r\\n\";\n\nmsg.data = {\n    sat : sat,\n    rssi : Number(rssi),\n    snr : Number(snr),\n    doppler : Number(doppler),\n    status : status\n};\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1270,
+        "y": 700,
+        "wires": [
+            [
+                "f1883e8610224543"
+            ]
+        ]
+    },
+    {
+        "id": "170c70a3891ed20d",
+        "type": "function",
+        "z": "4ff50634012ce664",
+        "name": "InfluxDB entry",
+        "func": "msg = {\n    payload: msg.data\n};\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 2440,
+        "y": 600,
+        "wires": [
+            [
+                "f56744f31a898472"
+            ]
+        ]
+    },
+    {
+        "id": "ba6f05549ae86df4",
+        "type": "switch",
+        "z": "4ff50634012ce664",
+        "name": "New pass only",
+        "property": "new_pass",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "true"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 1980,
+        "y": 600,
+        "wires": [
+            [
+                "a044c6ef26fb8961"
+            ]
+        ]
+    },
+    {
+        "id": "6215657bcff571d9",
+        "type": "comment",
+        "z": "4ff50634012ce664",
+        "name": "/cmnd/foff",
+        "info": "",
+        "x": 880,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "a044c6ef26fb8961",
+        "type": "function",
+        "z": "4ff50634012ce664",
+        "name": "Parse pass data",
+        "func": "let start_time = new Date(msg.payload.passes[0].startUTC*1000);\n\nlet start_year = start_time.getFullYear();\nlet start_month = String(start_time.getMonth() + 1).padStart(2, '0'); // months are 0-based\nlet start_day = String(start_time.getDate()).padStart(2, '0');\nlet start_date = `${start_year}/${start_month}/${start_day}`;\n\nlet max_time = new Date(msg.payload.passes[0].maxUTC*1000);\nlet end_time = new Date(msg.payload.passes[0].endUTC*1000);\nlet max_el = msg.payload.passes[0].maxEl;\n\nlet duration = (end_time.getTime() - start_time.getTime()) / 1000; // in seconds\n\nstart_time = start_time.toLocaleTimeString(\"pt-PT\");\nmax_time = max_time.toLocaleTimeString(\"pt-PT\");\nend_time = end_time.toLocaleTimeString(\"pt-PT\");\n\nmsg.msg_str += \"Next pass: \" + start_time + \" - \" + end_time + \"\\r\\n\";\nmsg.msg_str += \"Max elevation: \" + max_el + \"º @ \" + max_time;\n\nmsg.data = {\n    sat : msg.payload.info.satname,\n    start_date : start_date,\n    start_time: start_time,\n    max_time: max_time,\n    end_time: end_time,\n    max_el: max_el,\n    duration: duration\n};\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 2200,
+        "y": 600,
+        "wires": [
+            [
+                "170c70a3891ed20d"
+            ]
+        ]
+    },
+    {
+        "id": "bc4eebaa09687565",
+        "type": "comment",
+        "z": "4ff50634012ce664",
+        "name": "Pass stats",
+        "info": "## Cumulative:\n1. Number of passes + high-quality passes (min el.)\n2. Number of different satellites visible\n3. Minutes of visibility across all satellites\n\n## Averages:\n4. Number of passes daily\n5. Pass duration\n6. Maximum elevation\n7. Pass gap\n\n## Satellite ranking:\n8. Highest elevation\n9. Longest pass\n10. Longest cumulative visible time\n11. Most frequent\n\n\n## Ideas:\nTotal number of passes\nTotal visibility time (sum of duration)\nTotal satellites observed\nTotal high-elevation passes (e.g. > X° threshold)\nTotal night/day passes (if time classified)\nTotal overlapping passes (if applicable)\nAverage pass duration\nAverage maximum elevation\nAverage time to peak (start → max_time)\nAverage pass symmetry (time before vs after peak)\nAverage gap between passes\nAverage passes per day\nAverage elevation rate (deg/min to peak)\nHighest average elevation\nHighest single-pass elevation\nLongest average pass duration\nLongest single pass\nMost cumulative visibility time\nMost frequent passes\nBest “accessibility score” (combined duration + elevation)\nFastest rise-to-peak (steepest passes)",
+        "x": 1860,
+        "y": 920,
+        "wires": []
+    },
+    {
+        "id": "23b113b256f21c29",
+        "type": "function",
+        "z": "4ff50634012ce664",
+        "name": "Query list",
+        "func": "switch(msg.query_type)\n{\n\n    // =================\n    // CUMULATIVE (WEEKLY)\n    // =================\n\n    case 1: // passes\n        msg.query = `\n            SELECT\n                COUNT(*) AS total_passes_n,\n                SUM(CASE WHEN max_el >= 60 THEN 1 ELSE 0 END) AS high_quality_passes_n\n            FROM passes\n            WHERE time >= NOW() - INTERVAL '7 days'\n        `;\n    break;\n\n    case 2: // number of satellites\n        msg.query = `\n            SELECT\n                COUNT(DISTINCT sat) AS satellites_visible_n\n            FROM passes\n            WHERE time >= NOW() - INTERVAL '7 days'\n        `;\n    break;\n\n    case 3: // total visibility\n        msg.query = `\n            SELECT\n                SUM(duration) / 3600 AS total_visibility_hr\n            FROM passes\n            WHERE time >= NOW() - INTERVAL '7 days'\n        `;\n    break;\n\n\n\n    // =================\n    // AVERAGES (WEEKLY)\n    // =================\n\n    case 4: // passes per day\n        msg.query = `\n            SELECT\n                AVG(daily_passes) AS avg_passes_per_day_n\n            FROM (\n                SELECT\n                    DATE_BIN(INTERVAL '1 day', time) AS day,\n                    COUNT(*) AS daily_passes\n                FROM passes\n                WHERE time >= NOW() - INTERVAL '7 days'\n                GROUP BY day\n            )\n        `;\n    break;\n\n    case 5: // pass duration\n        msg.query = `\n            SELECT\n            AVG(duration) / 60 AS avg_pass_duration_min\n                FROM passes\n                WHERE time >= NOW() - INTERVAL '7 days'\n        `;\n    break;\n\n    case 6: // max elevation\n        msg.query = `\n            SELECT\n                AVG(max_el) AS avg_max_elevation_deg\n            FROM passes\n            WHERE time >= NOW() - INTERVAL '7 days'\n        `;\n    break;\n\n    case 7: // pass gap\n        msg.query = `\n            SELECT\n                AVG(gap_seconds) / 60 AS avg_pass_gap_min\n            FROM (\n                SELECT\n                    EXTRACT(EPOCH FROM (\n                        time - LAG(time) OVER (PARTITION BY sat ORDER BY time)\n                    )) AS gap_seconds\n                FROM passes\n                WHERE time >= NOW() - INTERVAL '7 days'\n            )\n            WHERE gap_seconds IS NOT NULL\n        `;\n    break;\n\n\n\n    // =================\n    // SATELLITE RANKING (WEEKLY TOP 3)\n    // =================\n\n    case 8: // highest elevation\n        msg.query = `\n            SELECT\n                sat,\n                MAX(max_el) AS sat_highest_elevation_deg\n            FROM passes\n            WHERE time >= NOW() - INTERVAL '7 days'\n            GROUP BY sat\n            ORDER BY sat_highest_elevation_deg DESC\n            LIMIT 3\n        `;\n    break;\n\n    case 9: // longest pass\n        msg.query = `\n            SELECT\n                sat,\n                MAX(duration) / 60 AS sat_longest_pass_min\n            FROM passes\n            WHERE time >= NOW() - INTERVAL '7 days'\n            GROUP BY sat\n            ORDER BY sat_longest_pass_min DESC\n            LIMIT 3\n        `;\n    break;\n\n    case 10: // cumulative visibility\n        msg.query = `\n            SELECT\n                sat,\n                SUM(duration) / 3600 AS sat_visibility_hr\n            FROM passes\n            WHERE time >= NOW() - INTERVAL '7 days'\n            GROUP BY sat\n            ORDER BY sat_visibility_hr DESC\n            LIMIT 3\n        `;\n    break;\n\n    case 11: // most frequent satellites\n        msg.query = `\n            SELECT\n                sat,\n                COUNT(*) AS sat_passes_n\n            FROM passes\n            WHERE time >= NOW() - INTERVAL '7 days'\n            GROUP BY sat\n            ORDER BY sat_passes_n DESC\n            LIMIT 3\n        `;\n    break;\n\n    // =================\n    // CHALLENGE\n    // =================\n    \n    case 12: // ≥1 pass ≥ 88° every day\n        msg.query = `\n        SELECT \n            COUNT(DISTINCT DATE_TRUNC('day', time)) = 7 AS peak_days\n        FROM passes\n        WHERE max_el >= 88\n        AND time >= now() - INTERVAL '7 days';\n        `;\n        break;\n\n    default:\n        msg.query = null;\n}\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1860,
+        "y": 980,
+        "wires": [
+            [
+                "45ca4eed076e6262"
+            ]
+        ]
+    },
+    {
+        "id": "a671943719b17006",
+        "type": "function",
+        "z": "4ff50634012ce664",
+        "name": "Query ID",
+        "func": "msg = {\n    query_type: msg.payload,\n    save: msg.save\n};\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1460,
+        "y": 980,
+        "wires": [
+            [
+                "23b113b256f21c29",
+                "e8d2c1bee4e07ad5",
+                "0846c077e1bf86e4"
+            ]
+        ]
+    },
+    {
+        "id": "211d76246a2a58fb",
+        "type": "split",
+        "z": "4ff50634012ce664",
+        "name": "split 12",
+        "splt": "1",
+        "spltType": "len",
+        "arraySplt": 1,
+        "arraySpltType": "len",
+        "stream": false,
+        "addname": "query_type",
+        "property": "payload",
+        "x": 1060,
+        "y": 980,
+        "wires": [
+            [
+                "af391ba92e8f0db0"
+            ]
+        ]
+    },
+    {
+        "id": "af391ba92e8f0db0",
+        "type": "delay",
+        "z": "4ff50634012ce664",
+        "name": "",
+        "pauseType": "rate",
+        "timeout": "2",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "3",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 1260,
+        "y": 980,
+        "wires": [
+            [
+                "a671943719b17006"
+            ]
+        ]
+    },
+    {
+        "id": "f7c33c16ae0b917e",
+        "type": "catch",
+        "z": "4ff50634012ce664",
+        "name": "",
+        "scope": null,
+        "uncaught": false,
+        "x": 440,
+        "y": 1580,
+        "wires": [
+            [
+                "dc5549edd02ab71d"
+            ]
+        ]
+    },
+    {
+        "id": "7ef6a2fa8a6900f1",
+        "type": "function",
+        "z": "4ff50634012ce664",
+        "name": "Satellite position (KeepTrack)",
+        "func": "let norad = msg.payload[0].norad;\nlet time = new Date().toISOString().split('.')[0] + 'Z';\n\nmsg.url = \"https://api.keeptrack.space/v4/sat/\" + String(norad) + \"/ecf/\" + String(time);\nreturn msg;\n\n/*\nhttps://api.keeptrack.space/v4/docs#/Satellite%20Positions/get_SatLlaRoute\n*/",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 2240,
+        "y": 700,
+        "wires": [
+            [
+                "e2dacd6abe3e0520"
+            ]
+        ],
+        "info": "Get visual passes\r\nGet predicted visual passes for any satellite relative to a location on Earth. A \"visual pass\" is a pass that should be optically visible on the entire (or partial) duration of crossing the sky. For that to happen, the satellite must be above the horizon, illumintaed by Sun (not in Earth shadow), and the sky dark enough to allow visual satellite observation.\r\n\r\nRequest: /visualpasses/{id}/{observer_lat}/{observer_lng}/{observer_alt}/{days}/{min_visibility}\r\n\r\nParameter\t^    Type\tRequired\tComments\r\nid\t            integer\tYes\t NORAD id\r\nobserver_lat\tfloat\tYes\t        Observer's latitide (decimal degrees format)\r\nobserver_lng\tfloat\tYes\t        Observer's longitude (decimal degrees format)\r\nobserver_alt\tfloat\tYes\t Observer's altitude above sea level in meters\r\ndays\t    integer\tYes\t        Number of days of prediction (max 10)\r\nmin_visibility\tinteger\tYes\t        Minimum number of seconds the satellite should be considered optically visible during the pass to be returned as result\r\n\r\n"
+    },
+    {
+        "id": "e2dacd6abe3e0520",
+        "type": "http request",
+        "z": "4ff50634012ce664",
+        "name": "Sat pos request",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [
+            {
+                "keyType": "other",
+                "keyValue": "accept",
+                "valueType": "other",
+                "valueValue": "application/json"
+            },
+            {
+                "keyType": "other",
+                "keyValue": "X-API-Key",
+                "valueType": "other",
+                "valueValue": "$(KEEP_TRACK_API_KEY)"
+            }
+        ],
+        "x": 2500,
+        "y": 700,
+        "wires": [
+            [
+                "dee7314c51f391b8"
+            ]
+        ]
+    },
+    {
+        "id": "dee7314c51f391b8",
+        "type": "function",
+        "z": "4ff50634012ce664",
+        "name": "LOS distance",
+        "func": "// WGS84 constants in km\nconst a = 6378.137; \nconst e2 = 6.69437999014e-3;\n\n// Convert degrees to radians\nfunction deg2rad(deg)\n{\n    return deg * Math.PI / 180;\n}\n\n// LLA → ECEF (km)\nfunction llaToEcef(lat, lon, alt)\n{\n    let phi = deg2rad(lat);\n    let lambda = deg2rad(lon);\n\n    let N = a / Math.sqrt(1 - e2 * Math.sin(phi) * Math.sin(phi));\n\n    let x = (N + alt) * Math.cos(phi) * Math.cos(lambda);\n    let y = (N + alt) * Math.cos(phi) * Math.sin(lambda);\n    let z = (N * (1 - e2) + alt) * Math.sin(phi);\n\n    return { x, y, z };\n}\n\nlet gs_lat = env.get(\"GS_POS_LAT\");\nlet gs_lon = env.get(\"GS_POS_LON\");\nlet gs_alt = env.get(\"GS_POS_ALT\");\n\nmsg.pos = {gs_lat,gs_lon,gs_alt};\n\n// Convert GS to ECEF (km)\nlet gs = llaToEcef(gs_lat, gs_lon, gs_alt);\n\nmsg.gs = gs;\n\n// Satellite ECEF from API (already in km)\nlet sat = {\n    x: msg.payload.position.x,\n    y: msg.payload.position.y,\n    z: msg.payload.position.z\n};\n\n// LOS distance (km)\nlet dx = sat.x - gs.x;\nlet dy = sat.y - gs.y;\nlet dz = sat.z - gs.z;\n\nlet distance = Math.sqrt(dx * dx + dy * dy + dz * dz);\n\nmsg.data.distance = Number(distance.toFixed(1));\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 2720,
+        "y": 700,
+        "wires": [
+            [
+                "1f508e8e4acee9aa"
+            ]
+        ]
+    },
+    {
+        "id": "110ddeec02631257",
+        "type": "function",
+        "z": "4ff50634012ce664",
+        "name": "Query for NORAD",
+        "func": "let data = {\n    name: msg.payload.sat,\n    norad: msg.payload.NORAD\n}\n\nmsg = {\n    data : data,\n    query: `SELECT norad\n            FROM satellites\n            WHERE name='` + msg.payload.sat + `'`\n}\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1270,
+        "y": 500,
+        "wires": [
+            [
+                "9967a3d11f583ca6"
+            ]
+        ]
+    },
+    {
+        "id": "3373fa04b79c1062",
+        "type": "switch",
+        "z": "4ff50634012ce664",
+        "name": "New sat only",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "empty"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 1710,
+        "y": 500,
+        "wires": [
+            [
+                "640fced2e80a1bd3"
+            ]
+        ]
+    },
+    {
+        "id": "0a8bc0c1e1e0bc95",
+        "type": "function",
+        "z": "4ff50634012ce664",
+        "name": "InfluxDB entry",
+        "func": "msg = {\n    payload: msg.data\n};\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 2120,
+        "y": 500,
+        "wires": [
+            [
+                "0dfc487b56535870"
+            ]
+        ]
+    },
+    {
+        "id": "f1883e8610224543",
+        "type": "function",
+        "z": "4ff50634012ce664",
+        "name": "Query for NORAD",
+        "func": "msg = {\n    data : msg.data,\n    query: `SELECT norad\n            FROM satellites\n            WHERE name='` + msg.data.sat + `'`\n}\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1510,
+        "y": 700,
+        "wires": [
+            [
+                "7784ebf279f8c0ad"
+            ]
+        ]
+    },
+    {
+        "id": "f684c2ae8ddd8dc8",
+        "type": "switch",
+        "z": "4ff50634012ce664",
+        "name": "NORAD available",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "nempty"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 1970,
+        "y": 700,
+        "wires": [
+            [
+                "7ef6a2fa8a6900f1"
+            ]
+        ]
+    },
+    {
+        "id": "640fced2e80a1bd3",
+        "type": "switch",
+        "z": "4ff50634012ce664",
+        "name": "Real NORAD",
+        "property": "data.norad",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "neq",
+                "v": "99999",
+                "vt": "num"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 1910,
+        "y": 500,
+        "wires": [
+            [
+                "0a8bc0c1e1e0bc95"
+            ]
+        ]
+    },
+    {
+        "id": "1f508e8e4acee9aa",
+        "type": "function",
+        "z": "4ff50634012ce664",
+        "name": "InfluxDB entry",
+        "func": "msg = {\n    payload: msg.data\n};\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 2940,
+        "y": 700,
+        "wires": [
+            [
+                "3279cdc686756381"
+            ]
+        ]
+    },
+    {
+        "id": "c1ca3f930f7fb4c1",
+        "type": "comment",
+        "z": "4ff50634012ce664",
+        "name": "Packet stats",
+        "info": "## Cumulative:\n1. Packets received / confirmed (sucess rate)\n2. Satellites successfully decoded from\n\n## Averages:\n3. RSSI\n4. SNR\n5. Doppler shift\n6. Distance\n\n## Satellite ranking:\n7. Farthest packet\n8. Worst SNR/RSSI with success\n9. Satellite with most packets received\n10. Highest success rate\n\n## Challenge:\n11. At least 1 packet daily\n\n\n## Ideas:\nTotal packets received\nTotal confirmed packets (success count)\nTotal failed / lost packets (from status)\nTotal satellites successfully decoded from\nTotal reception time (time span with packets)\nTotal data volume (if packet size known)\nAverage packets per pass\nAverage packets per day\nAverage RSSI\nAverage SNR\nAverage Doppler shift (absolute + signed)\nAverage distance at reception\nPacket success rate (%)\nAverage time gap between packets\nSatellite Ranking (Performance per sat)\nMost packets received\nHighest success rate\nBest average RSSI\nBest average SNR\nClosest average distance\nMost stable link (lowest RSSI/SNR variance)\nLongest continuous reception streak\nHighest throughput (packets/day)",
+        "x": 1870,
+        "y": 1060,
+        "wires": []
+    },
+    {
+        "id": "c2bb821188dc0890",
+        "type": "function",
+        "z": "4ff50634012ce664",
+        "name": "Query list",
+        "func": "switch(msg.query_type)\n{\n    // =================\n    // CUMULATIVE (WEEKLY)\n    // =================\n\n    case 1: // Packets + success rate (FIXED)\n        msg.query = `\n        SELECT \n          COUNT(*) AS total_packets,\n          SUM(CASE WHEN status = 'CONFIRMED' THEN 1 ELSE 0 END) AS confirmed_packets,\n          SUM(CASE WHEN status = 'CONFIRMED' THEN 1 ELSE 0 END) * 1.0 / COUNT(*) AS success_rate\n        FROM packets\n        WHERE time >= now() - INTERVAL '7 days';\n        `;\n        break;\n\n    case 2: // Satellites successfully decoded from\n        msg.query = `\n        SELECT COUNT(DISTINCT sat) AS sats_with_success\n        FROM packets\n        WHERE status = 'CONFIRMED'\n          AND time >= now() - INTERVAL '7 days';\n        `;\n        break;\n\n\n    // =================\n    // AVERAGES\n    // =================\n\n    case 3: // rssi\n        msg.query = `\n        SELECT AVG(rssi) AS avg_rssi\n        FROM packets\n        WHERE status = 'CONFIRMED'\n          AND time >= now() - INTERVAL '7 days';\n        `;\n        break;\n\n    case 4: // snr\n        msg.query = `\n        SELECT AVG(snr) AS avg_snr\n        FROM packets\n        WHERE status = 'CONFIRMED'\n          AND time >= now() - INTERVAL '7 days';\n        `;\n        break;\n\n    case 5: // doppler shift\n        msg.query = `\n        SELECT \n          AVG(doppler) AS avg_doppler,\n          AVG(ABS(doppler)) AS avg_abs_doppler\n        FROM packets\n        WHERE status = 'CONFIRMED'\n          AND time >= now() - INTERVAL '7 days';\n        `;\n        break;\n\n    case 6: // sat distance when packet arrived\n        msg.query = `\n        SELECT AVG(distance) AS avg_distance\n        FROM packets\n        WHERE status = 'CONFIRMED'\n          AND time >= now() - INTERVAL '7 days';\n        `;\n        break;\n\n\n    // =================\n    // SATELLITE RANKING\n    // =================\n\n    case 7: // Farthest satellite\n        msg.query = `\n        SELECT sat, MAX(distance) AS max_distance\n        FROM packets\n        WHERE status = 'CONFIRMED'\n          AND time >= now() - INTERVAL '7 days'\n        GROUP BY sat\n        ORDER BY max_distance DESC\n        LIMIT 3;\n        `;\n        break;\n\n    case 8: // Worst SNR / RSSI with success\n        msg.query = `\n        SELECT \n          sat,\n          MIN(snr) AS worst_snr,\n          MIN(rssi) AS worst_rssi\n        FROM packets\n        WHERE status = 'CONFIRMED'\n          AND time >= now() - INTERVAL '7 days'\n        GROUP BY sat\n        ORDER BY worst_snr ASC, worst_rssi ASC\n        LIMIT 3;\n        `;\n        break;\n\n    case 9: // Satellite with most packets received\n        msg.query = `\n        SELECT sat, COUNT(*) AS packet_count\n        FROM packets\n        WHERE time >= now() - INTERVAL '7 days'\n        GROUP BY sat\n        ORDER BY packet_count DESC\n        LIMIT 3;\n        `;\n        break;\n\n    case 10: // Highest success rate \n        msg.query = `\n        SELECT \n          sat,\n          SUM(CASE WHEN status = 'CONFIRMED' THEN 1 ELSE 0 END) * 1.0 / COUNT(*) AS success_rate\n        FROM packets\n        WHERE time >= now() - INTERVAL '7 days'\n        GROUP BY sat\n        HAVING COUNT(*) > 10\n        ORDER BY success_rate DESC\n        LIMIT 3;\n        `;\n        break;\n\n\n    // =================\n    // CHALLENGE\n    // =================\n\n    case 11: // Satellites with ≥1 packet every day \n        msg.query = `\n        SELECT sat\n        FROM (\n          SELECT \n            sat,\n            COUNT(DISTINCT DATE_TRUNC('day', time)) AS active_days\n          FROM packets\n          WHERE status = 'CONFIRMED'\n            AND time >= now() - INTERVAL '7 days'\n          GROUP BY sat\n        )\n        WHERE active_days = 7;\n        `;\n        break;\n\n\n    default:\n        msg.query = null;\n}\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1860,
+        "y": 1120,
+        "wires": [
+            [
+                "c7080ccf5bc510d8"
+            ]
+        ]
+    },
+    {
+        "id": "01080fa77944c9c9",
+        "type": "join",
+        "z": "4ff50634012ce664",
+        "name": "join",
+        "mode": "custom",
+        "build": "array",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "payload",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "useparts": false,
+        "accumulate": false,
+        "timeout": "",
+        "count": "11",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "num",
+        "reduceFixup": "",
+        "x": 2250,
+        "y": 1120,
+        "wires": [
+            [
+                "7ba9ba05b1ddf197"
+            ]
+        ]
+    },
+    {
+        "id": "a4d4bebdb1f77dc8",
+        "type": "join",
+        "z": "4ff50634012ce664",
+        "name": "join",
+        "mode": "custom",
+        "build": "array",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "payload",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "useparts": false,
+        "accumulate": false,
+        "timeout": "",
+        "count": "12",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "num",
+        "reduceFixup": "",
+        "x": 2250,
+        "y": 980,
+        "wires": [
+            [
+                "4f09a15b32619164"
+            ]
+        ]
+    },
+    {
+        "id": "7ba9ba05b1ddf197",
+        "type": "function",
+        "z": "4ff50634012ce664",
+        "name": "Format stats",
+        "func": "let p = msg.payload;\n\n// helpers\nconst get0 = (arr) => (arr && arr[0]) || {};\nconst topN = (arr, n) => Array.from({ length: n }, (_, i) => arr?.[i] || {});\nconst pct = (v) => v ? Number((v * 100).toFixed(1)) : 0;\nconst fix = (v, d = 1) => (v || v === 0) ? Number(v.toFixed(d)) : 0;\n\n// base objects\nlet packets = get0(p[0]);\nlet sats = get0(p[1]);\nlet rssi = get0(p[2]);\nlet snr = get0(p[3]);\nlet doppler = get0(p[4]);\nlet distance = get0(p[5]);\nlet farthest = topN(p[6], 3);\nlet worst = topN(p[7], 3);\nlet most_packets = topN(p[8], 3);\nlet best_success = topN(p[9], 3);\nlet chl_consistency = (p[10] || []).filter(x => x && x.sat);\n\n// dynamic top builder\nfunction buildTop(prefix, arr, fields) {\n    let out = {};\n    arr.forEach((item, i) => {\n        let n = i + 1;\n        for (let [key, fn] of Object.entries(fields)) {\n            out[`${prefix}${n}_${key}`] = fn(item);\n        }\n    });\n    return out;\n}\n\n// format\nmsg.data = {\n\n    // =================\n    // CUMULATIVE\n    // =================\n    total_packets: packets.total_packets || 0,\n    confirmed_packets: packets.confirmed_packets || 0,\n    success_rate_pct: pct(packets.success_rate),\n    satellites_with_success: sats.sats_with_success || 0,\n\n    // =================\n    // AVERAGES\n    // =================\n    avg_rssi_dbm: fix(rssi.avg_rssi),\n    avg_snr_db: fix(snr.avg_snr),\n    avg_doppler_hz: fix(doppler.avg_doppler, 0),\n    avg_abs_doppler_hz: fix(doppler.avg_abs_doppler, 0),\n    avg_distance_km: fix(distance.avg_distance),\n\n    // =================\n    // RANKINGS\n    // =================\n    ...buildTop(\"top\", farthest, {\n        farthest_sat: x => x.sat || null,\n        farthest_distance_km: x => fix(x.max_distance)\n    }),\n\n    ...buildTop(\"top\", worst, {\n        worst_link_sat: x => x.sat || null,\n        worst_snr_db: x => x.worst_snr ?? null,\n        worst_rssi_dbm: x => x.worst_rssi ?? null\n    }),\n\n    ...buildTop(\"top\", most_packets, {\n        most_packets_sat: x => x.sat || null,\n        most_packets_count: x => x.packet_count || 0\n    }),\n\n    ...buildTop(\"top\", best_success, {\n        best_success_sat: x => x.sat || null,\n        best_success_rate_pct: x => pct(x.success_rate)\n    }),\n\n    // =================\n    // CHALLENGES\n    // =================\n    chl_consistency_sats: chl_consistency.map(x => x.sat),\n    chl_consistency_count: chl_consistency.length\n};\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 2430,
+        "y": 1120,
+        "wires": [
+            [
+                "df966d574dcd58b1"
+            ]
+        ]
+    },
+    {
+        "id": "4f09a15b32619164",
+        "type": "function",
+        "z": "4ff50634012ce664",
+        "name": "Format stats",
+        "func": "let p = msg.payload;\n\n// helpers\nconst get0 = (arr) => (arr && arr[0]) || {};\nconst topN = (arr, n) => Array.from({ length: n }, (_, i) => arr?.[i] || {});\nconst fix = (v, d=1) => (v || v === 0) ? Number(v.toFixed(d)) : 0;\n\n// base objects\nlet passes     = get0(p[0]);\nlet sats       = get0(p[1]);\nlet visibility = get0(p[2]);\nlet avg_passes = get0(p[3]);\nlet avg_dur    = get0(p[4]);\nlet avg_el     = get0(p[5]);\nlet avg_gap    = get0(p[6]);\nlet highest_el = topN(p[7], 3);\nlet longest    = topN(p[8], 3);\nlet most_vis   = topN(p[9], 3);\nlet most_freq  = topN(p[10], 3);\nlet peak_days  = get0(p[11]);\n\n// dynamic top builder\nfunction buildTop(prefix, arr, fields) {\n    let out = {};\n    arr.forEach((item, i) => {\n        let n = i + 1;\n        for (let [key, fn] of Object.entries(fields)) {\n            out[`${prefix}${n}_${key}`] = fn(item);\n        }\n    });\n    return out;\n}\n\n// format \nmsg.data = {\n\n    // =================\n    // CUMULATIVE\n    // =================\n    total_passes: passes.total_passes_n || 0,\n    high_quality_passes: passes.high_quality_passes_n || 0,\n    satellites_visible: sats.satellites_visible_n || 0,\n    total_visibility_hr: fix(visibility.total_visibility_hr, 1),\n\n    // =================\n    // AVERAGES\n    // =================\n    avg_passes_per_day: fix(avg_passes.avg_passes_per_day_n, 0),\n    avg_pass_duration_min: fix(avg_dur.avg_pass_duration_min),\n    avg_max_elevation_deg: fix(avg_el.avg_max_elevation_deg),\n    avg_pass_gap_min: fix(avg_gap.avg_pass_gap_min),\n\n    // =================\n    // RANKINGS \n    // =================\n    ...buildTop(\"top\", highest_el, {\n        highest_elevation_sat: x => x.sat || null,\n        highest_elevation_deg: x => fix(x.sat_highest_elevation_deg)\n    }),\n\n    ...buildTop(\"top\", longest, {\n        longest_pass_sat: x => x.sat || null,\n        longest_pass_min: x => fix(x.sat_longest_pass_min)\n    }),\n\n    ...buildTop(\"top\", most_vis, {\n        most_visible_sat: x => x.sat || null,\n        most_visible_hr: x => fix(x.sat_visibility_hr, 2)\n    }),\n\n    ...buildTop(\"top\", most_freq, {\n        most_frequent_sat: x => x.sat || null,\n        most_frequent_passes: x => x.sat_passes_n || 0\n    }),\n\n    // =================\n    // CHALLENGES\n    // =================\n    chl_high_el : (peak_days.peak_days === 7)\n}\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 2430,
+        "y": 980,
+        "wires": [
+            [
+                "ac7147842728d9ac"
+            ]
+        ]
+    },
+    {
+        "id": "df966d574dcd58b1",
+        "type": "delay",
+        "z": "4ff50634012ce664",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "6",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 2620,
+        "y": 1120,
+        "wires": [
+            [
+                "f505fad0e94c153b",
+                "6dc7c5a36bc6f8cc"
+            ]
+        ]
+    },
+    {
+        "id": "18ba58c6f86ab826",
+        "type": "function",
+        "z": "4ff50634012ce664",
+        "name": "Filter stats",
+        "func": "let d = msg.data;\n\n// remove all top2/top3 fields\nfor (let key in d) {\n    if (key.startsWith(\"top2_\") || key.startsWith(\"top3_\")) {\n        delete d[key];\n    }\n}\n\nmsg.data = d;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 3030,
+        "y": 980,
+        "wires": [
+            [
+                "41df8a7f326c7843"
+            ]
+        ]
+    },
+    {
+        "id": "41df8a7f326c7843",
+        "type": "function",
+        "z": "4ff50634012ce664",
+        "name": "InfluxDB entry",
+        "func": "msg = {\n    payload: msg.data\n};\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 3240,
+        "y": 980,
+        "wires": [
+            [
+                "e8894dbba9f2ea66"
+            ]
+        ]
+    },
+    {
+        "id": "94eeb40b29a5528c",
+        "type": "function",
+        "z": "4ff50634012ce664",
+        "name": "Filter stats",
+        "func": "let d = msg.data;\n\n// remove all top2/top3 fields\nfor (let key in d) {\n    if (key.startsWith(\"top2_\") || key.startsWith(\"top3_\")) {\n        delete d[key];\n    }\n}\n\nd.chl_consistency_sats = JSON.stringify(d.chl_consistency_sats || []);\ndelete d[\"chl_consistency_count\"];\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 3030,
+        "y": 1120,
+        "wires": [
+            [
+                "68f95a03f6640610"
+            ]
+        ]
+    },
+    {
+        "id": "68f95a03f6640610",
+        "type": "function",
+        "z": "4ff50634012ce664",
+        "name": "InfluxDB entry",
+        "func": "msg = {\n    payload: msg.data\n};\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 3240,
+        "y": 1120,
+        "wires": [
+            [
+                "d48e07e2d61db1e8"
+            ]
+        ]
+    },
+    {
+        "id": "0135884daf9da7dc",
+        "type": "comment",
+        "z": "4ff50634012ce664",
+        "name": "Satellite stats",
+        "info": "\n\n\n\n## Ideas:\n1. New satellites per week\n2. Cumulative unique satellites (growth curve)\n3. Weekly growth rate (%)\n4. Day with most discoveries\n5. Hour-of-day discovery distribution\n6. Longest gap between new satellites\n7. Shortest burst (rapid discoveries)\n8. Consecutive days with new satellites\n9. First-seen leaderboard (by recency)\n10. Oldest “new” satellite seen\n11. Time from first-seen → first successful packet\n12. Time from first-seen → best pass\n13. First-seen satellites that never produced packets\n14. Discovery density (satellites per hour of operation)\n15. Weekly “rarity score”",
+        "x": 1870,
+        "y": 1200,
+        "wires": []
+    },
+    {
+        "id": "a6c99eec701c198d",
+        "type": "function",
+        "z": "4ff50634012ce664",
+        "name": "Query list",
+        "func": "switch (msg.query_type)\n{\n    case 1: // New satellites this week (name + count)\n        msg.query = `\n        SELECT DISTINCT name\n        FROM satellites\n        WHERE time >= now() - INTERVAL '7 days';\n        `;\n        break;\n\n    case 2: // Cumulative unique satellites\n        msg.query = `\n        SELECT COUNT(DISTINCT norad) AS total_unique\n        FROM satellites;\n        `;\n        break;\n\n    case 3: // Avg gap between discoveries\n        msg.query = `\n        SELECT AVG(gap_seconds) AS avg_gap_seconds\n        FROM (\n            SELECT\n                EXTRACT(EPOCH FROM time)\n                - LAG(EXTRACT(EPOCH FROM time)) OVER (ORDER BY time) AS gap_seconds\n            FROM satellites\n        )\n        WHERE gap_seconds IS NOT NULL;\n        `;\n        break;\n\n    case 4: // First-seen sats (later combined with case 5)\n        msg.query = `\n        SELECT DISTINCT name\n        FROM satellites;\n        `;\n        break;\n\n    case 5: // Sats with packets (later combined with case 4)\n        msg.query = `\n        SELECT DISTINCT sat\n        FROM packets;\n        `;\n        break;\n\n    case 6: // ≥1 new sat per day (bool)\n        msg.query = `\n        SELECT \n            COUNT(DISTINCT DATE_TRUNC('day', time)) = 7 AS full_week\n        FROM satellites\n        WHERE time >= now() - INTERVAL '7 days';\n        `;\n        break;\n\n    default:\n        msg.query = null;\n}\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1860,
+        "y": 1260,
+        "wires": [
+            [
+                "9e5f8bb727e211e4"
+            ]
+        ]
+    },
+    {
+        "id": "b228b69c5bb08bd6",
+        "type": "join",
+        "z": "4ff50634012ce664",
+        "name": "join",
+        "mode": "custom",
+        "build": "array",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "payload",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "useparts": false,
+        "accumulate": false,
+        "timeout": "",
+        "count": "6",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "num",
+        "reduceFixup": "",
+        "x": 2250,
+        "y": 1260,
+        "wires": [
+            [
+                "277d560836d825ec"
+            ]
+        ]
+    },
+    {
+        "id": "277d560836d825ec",
+        "type": "function",
+        "z": "4ff50634012ce664",
+        "name": "Format stats",
+        "func": "let p = msg.payload;\n\n// helpers\nconst get0 = (arr) => (arr && arr[0]) || {};\nconst fix = (v, d=1) => (v || v === 0) ? Number(v.toFixed(d)) : 0;\n\n// extract\nlet weekly_rows     = p[0] || [];   // case 1\nlet total_unique    = get0(p[1]);   // case 2\nlet gap             = get0(p[2]);   // case 3\nlet seen            = p[3] || [];   // case 4\nlet listened        = p[4] || [];  // case 5\nlet chl_discovery   = get0(p[5]);   // case 6\n\n// process\nlet new_sats = weekly_rows.map(x => x.name).filter(Boolean);\n\n// case 4/5 logic (active sats)\nlet listenedSet = new Set(listened.map(x => x.sat));\nlet used = seen.filter(x => listenedSet.has(x.name));\n\n// format\nmsg.data = {\n    new_sats: new_sats,\n    new_sats_count: new_sats.length,\n    total_unique_sats: total_unique.total_unique || 0,\n    avg_gap_hr: fix((gap.avg_gap_seconds || 0) / 3600, 2),\n    used_sats: used.map(x => x.name),\n    used_count: used.length,\n    used_ratio_pct: seen.length \n        ? fix((used.length / seen.length) * 100, 1)\n        : 0,\n    chl_discovery_sats: chl_discovery.full_week || false\n};\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 2430,
+        "y": 1260,
+        "wires": [
+            [
+                "29b21aea9b243710"
+            ]
+        ]
+    },
+    {
+        "id": "29b21aea9b243710",
+        "type": "delay",
+        "z": "4ff50634012ce664",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "27",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 2620,
+        "y": 1260,
+        "wires": [
+            [
+                "01c1f89921d1532a",
+                "a157f4c621a05719"
+            ]
+        ]
+    },
+    {
+        "id": "01c1f89921d1532a",
+        "type": "link out",
+        "z": "4ff50634012ce664",
+        "name": "formatted_stats",
+        "mode": "link",
+        "links": [
+            "ea02f745cb145fa4"
+        ],
+        "x": 2755,
+        "y": 1320,
+        "wires": []
+    },
+    {
+        "id": "2969cace25aee104",
+        "type": "join",
+        "z": "4ff50634012ce664",
+        "name": "join",
+        "mode": "custom",
+        "build": "array",
+        "property": "data",
+        "propertyType": "msg",
+        "key": "payload",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "useparts": false,
+        "accumulate": false,
+        "timeout": "",
+        "count": "3",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "num",
+        "reduceFixup": "",
+        "x": 3010,
+        "y": 1420,
+        "wires": [
+            [
+                "a2f9aea205981374"
+            ]
+        ]
+    },
+    {
+        "id": "f505fad0e94c153b",
+        "type": "link out",
+        "z": "4ff50634012ce664",
+        "name": "formatted_stats",
+        "mode": "link",
+        "links": [
+            "ea02f745cb145fa4"
+        ],
+        "x": 2755,
+        "y": 1180,
+        "wires": []
+    },
+    {
+        "id": "ea02f745cb145fa4",
+        "type": "link in",
+        "z": "4ff50634012ce664",
+        "name": "formatted_stats",
+        "links": [
+            "01c1f89921d1532a",
+            "912fdcc167ac90d0",
+            "f505fad0e94c153b"
+        ],
+        "x": 2885,
+        "y": 1420,
+        "wires": [
+            [
+                "2969cace25aee104"
+            ]
+        ]
+    },
+    {
+        "id": "a2f9aea205981374",
+        "type": "function",
+        "z": "4ff50634012ce664",
+        "name": "Compile report",
+        "func": "let d = {\n    orbit : msg.data[0],\n    packet : msg.data[1],\n    sats : msg.data[2]\n};\n\nlet gs = env.get(\"GS_SHORT_NAME\");\n\n// --- time ---\nlet now = new Date();\nlet startStr = now.toISOString().slice(0, 10);\nlet firstJan = new Date(now.getFullYear(), 0, 1);\nlet weekNo = Math.ceil((((now.getTime() - firstJan.getTime()) / 86400000) + 1) / 7);\n\n// --- helpers ---\nconst safe = (v, f=1) => (v || v === 0) ? Number(v).toFixed(f) : \"0\";\nconst listTop = (prefix, key1, key2, unit=\"\", f=1) => {\n    let out = [];\n    for (let i = 1; i <= 3; i++) {\n        let sat = d[prefix]?.[`top${i}_${key1}`];\n        let val = d[prefix]?.[`top${i}_${key2}`];\n        if (sat) out.push(`${i}. ${sat} (${safe(val, f)}${unit})`);\n    }\n    return out.join(\"\\n\") || \"-\";\n};\n\n// --- message ---\nmsg.msg_str = `\n\\`\\`\\`\n📋 GS WEEKLY ACTIVITY REPORT\n📡 ${gs}\n📅 Week #${weekNo} (${startStr})\n\n=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n\n🛰 ORBIT ACTIVITY\nTotal passes (≥20º el.): ${d.orbit.total_passes}\nHigh qual. passes (≥60º el.): ${d.orbit.high_quality_passes}\nSats. visible (& reg.): ${d.orbit.satellites_visible}\nTotal visibility: ${safe(d.orbit.total_visibility_hr)} hr\n\n-----------------------------------------\n\n📊 ORBIT AVERAGES\nPasses/day: ${safe(d.orbit.avg_passes_per_day,0)}\nPass duration: ${safe(d.orbit.avg_pass_duration_min)} min\nMax. elevation: ${safe(d.orbit.avg_max_elevation_deg)}°\nRevisit interval: ${safe(d.orbit.avg_pass_gap_min)} min\n\n-----------------------------------------\n\n🏆 ORBIT RANKINGS\nTotal passes:\n${listTop(\"orbit\", \"most_frequent_sat\", \"most_frequent_passes\", \"\", 0)}\n\nPass duration:\n${listTop(\"orbit\",\"longest_pass_sat\",\"longest_pass_min\",\" min\")}\n\nMax. elevation:\n${listTop(\"orbit\", \"highest_elevation_sat\", \"highest_elevation_deg\", \"°\")}\n\nTotal visibility:\n${listTop(\"orbit\",\"most_visible_sat\",\"most_visible_hr\",\" hr\",2)}\n\n=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n\n📡 PACKET PERFORMANCE\nTotal packets: ${d.packet.total_packets}\nConfirmed packets: ${d.packet.confirmed_packets} (${safe(d.packet.success_rate_pct)}%)\n\n-----------------------------------------\n\n📊 LINK AVERAGES\nRSSI: ${safe(d.packet.avg_rssi_dbm)} dBm\nSNR: ${safe(d.packet.avg_snr_db)} dB\nDoppler: ${safe(d.packet.avg_abs_doppler_hz,0)} Hz\nDistance: ${safe(d.packet.avg_distance_km)} km\n\n-----------------------------------------\n\n🏆 LINK RANKINGS\nFarthest successful packet:\n${listTop(\"packet\",\"farthest_sat\",\"farthest_distance_km\",\" km\")}\n\nWorst successful SNR link:\n${listTop(\"packet\",\"worst_link_sat\",\"worst_snr_db\",\" dB\")}\n\nMost packets:\n${listTop(\"packet\",\"most_packets_sat\",\"most_packets_count\",\"\",0)}\n\nBest success rate:\n${listTop(\"packet\",\"best_success_sat\",\"best_success_rate_pct\",\"%\",1)}\n\n=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n\n🆕 SATELLITES DISCOVERY\nNew satellites (${d.sats.new_sats_count} out of ${d.sats.total_unique_sats}):\n${d.sats.new_sats_count ? \"> \"+d.sats.new_sats.join(\", \")+\"\\n\" : \"\"}\nActive satellites: ${d.sats.used_count} (${safe(d.sats.used_ratio_pct)}%)\nAvg. gap between new sats.: ${d.sats.avg_gap_hr} hr\n\n=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n\n🎯 ACTIVE CHALLENGES\nSats. peaking every day (≥88º el.): ${d.orbit.chl_high_el ? \"✔️\" : \"❌\"}\nSats. active every day (≥1 pkt.): ${d.packet.chl_consistency_count ? \"✔️\" : \"❌\"}\nSats. discovered every day: ${d.sats.chl_discovery_sats ? \"✔️\" : \"❌\"}\n\\`\\`\\`\n`;\n\nmsg.parse_mode = \"MarkdownV2\";\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 3200,
+        "y": 1420,
+        "wires": [
+            [
+                "9d7556d2f5261b1a"
+            ]
+        ]
+    },
+    {
+        "id": "e8d2c1bee4e07ad5",
+        "type": "switch",
+        "z": "4ff50634012ce664",
+        "name": "Limit query",
+        "property": "query_type",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "lte",
+                "v": "6",
+                "vt": "num"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 1670,
+        "y": 1260,
+        "wires": [
+            [
+                "a6c99eec701c198d"
+            ]
+        ]
+    },
+    {
+        "id": "9d7556d2f5261b1a",
+        "type": "function",
+        "z": "4ff50634012ce664",
+        "name": "Telegram message",
+        "func": "let id = env.get(\"TELEGRAM_USER_ID\");\n\nmsg = {\n    payload: {\n        chatId: id,\n        type: \"message\",\n        content: msg.msg_str,\n        options : { \"parse_mode\": \"MarkdownV2\" }\n    }\n};\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 3430,
+        "y": 1420,
+        "wires": [
+            [
+                "b013e987495abc33"
+            ]
+        ]
+    },
+    {
+        "id": "0846c077e1bf86e4",
+        "type": "switch",
+        "z": "4ff50634012ce664",
+        "name": "Limit query",
+        "property": "query_type",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "lte",
+                "v": "11",
+                "vt": "num"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 1670,
+        "y": 1120,
+        "wires": [
+            [
+                "c2bb821188dc0890"
+            ]
+        ]
+    },
+    {
+        "id": "7c540ac7417b32b0",
+        "type": "function",
+        "z": "4ff50634012ce664",
+        "name": "Filter stats",
+        "func": "let d = msg.data;\n\nd.new_sats = JSON.stringify(d.new_sats || []);\ndelete d[\"new_sats_count\"];\ndelete d[\"used_sats\"];\ndelete d[\"used_sats_count\"];\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 3030,
+        "y": 1260,
+        "wires": [
+            [
+                "bff6d68bdaca5917"
+            ]
+        ]
+    },
+    {
+        "id": "bff6d68bdaca5917",
+        "type": "function",
+        "z": "4ff50634012ce664",
+        "name": "InfluxDB entry",
+        "func": "msg = {\n    payload: msg.data\n};\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 3240,
+        "y": 1260,
+        "wires": [
+            [
+                "c0d42771cfba2779"
+            ]
+        ]
+    },
+    {
+        "id": "a157f4c621a05719",
+        "type": "switch",
+        "z": "4ff50634012ce664",
+        "name": "Weekly prompt",
+        "property": "save",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "true"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 2820,
+        "y": 1260,
+        "wires": [
+            [
+                "7c540ac7417b32b0"
+            ]
+        ]
+    },
+    {
+        "id": "6dc7c5a36bc6f8cc",
+        "type": "switch",
+        "z": "4ff50634012ce664",
+        "name": "Weekly prompt",
+        "property": "save",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "true"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 2820,
+        "y": 1120,
+        "wires": [
+            [
+                "94eeb40b29a5528c"
+            ]
+        ]
+    },
+    {
+        "id": "956ad47e148cd29b",
+        "type": "switch",
+        "z": "4ff50634012ce664",
+        "name": "Weekly prompt",
+        "property": "save",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "true"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 2820,
+        "y": 980,
+        "wires": [
+            [
+                "18ba58c6f86ab826"
+            ]
+        ]
+    },
+    {
+        "id": "ac7147842728d9ac",
+        "type": "delay",
+        "z": "4ff50634012ce664",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "0",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 2620,
+        "y": 980,
+        "wires": [
+            [
+                "956ad47e148cd29b",
+                "912fdcc167ac90d0"
+            ]
+        ]
+    },
+    {
+        "id": "912fdcc167ac90d0",
+        "type": "link out",
+        "z": "4ff50634012ce664",
+        "name": "formatted_stats",
+        "mode": "link",
+        "links": [
+            "ea02f745cb145fa4"
+        ],
+        "x": 2755,
+        "y": 1040,
+        "wires": []
+    },
+    {
+        "id": "966fcad35c1e480b",
+        "type": "function",
+        "z": "4ff50634012ce664",
+        "name": "Compile error msg",
+        "func": "msg.msg_str = `🚨 [ERROR]\\n\nMessage: ${msg.error.message}\\n\nNode: ${msg.error.source?.name || \"unknown\"}\\n\nType: ${msg.error.source?.type || \"unknown\"}\n`;\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1010,
+        "y": 1580,
+        "wires": [
+            [
+                "8dcfb35210fa9e23"
+            ]
+        ]
+    },
+    {
+        "id": "8dcfb35210fa9e23",
+        "type": "function",
+        "z": "4ff50634012ce664",
+        "name": "Telegram message",
+        "func": "let id = env.get(\"TELEGRAM_USER_ID\");\n\nmsg = {\n    payload: {\n        chatId: id,\n        type: \"message\",\n        content: msg.msg_str\n    }\n};\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1250,
+        "y": 1580,
+        "wires": [
+            [
+                "f3e39dfbf57a910f"
+            ]
+        ]
+    },
+    {
+        "id": "b66ad0ae279ffc76",
+        "type": "function",
+        "z": "4ff50634012ce664",
+        "name": "Query stats",
+        "func": "msg.payload = [1,2,3,4,5,6,7,8,9,10,11,12];\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 870,
+        "y": 980,
+        "wires": [
+            [
+                "211d76246a2a58fb"
+            ]
+        ]
+    },
+    {
+        "id": "dc5549edd02ab71d",
+        "type": "delay",
+        "z": "4ff50634012ce664",
+        "name": "",
+        "pauseType": "rate",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": true,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 630,
+        "y": 1580,
+        "wires": [
+            [
+                "da29b580bc88a931"
+            ]
+        ]
+    },
+    {
+        "id": "da29b580bc88a931",
+        "type": "rbe",
+        "z": "4ff50634012ce664",
+        "name": "",
+        "func": "rbe",
+        "gap": "",
+        "start": "",
+        "inout": "out",
+        "septopics": true,
+        "property": "payload",
+        "topi": "topic",
+        "x": 810,
+        "y": 1580,
+        "wires": [
+            [
+                "966fcad35c1e480b"
+            ]
+        ]
+    },
+    {
+        "id": "9d89a38f78c2857e",
+        "type": "inject",
+        "z": "4ff50634012ce664",
+        "name": "Weekly trigger",
+        "props": [],
+        "repeat": "",
+        "crontab": "00 12 * * 1",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 460,
+        "y": 980,
+        "wires": [
+            [
+                "8b3728ce65f9e8f1"
+            ]
+        ]
+    },
+    {
+        "id": "8b3728ce65f9e8f1",
+        "type": "function",
+        "z": "4ff50634012ce664",
+        "name": "Save to DB",
+        "func": "msg.save = true;\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 670,
+        "y": 980,
+        "wires": [
+            [
+                "b66ad0ae279ffc76"
+            ]
+        ]
+    },
+    {
+        "id": "cfcb213c8ad1f19c",
+        "type": "function",
+        "z": "4ff50634012ce664",
+        "name": "Skip save to DB",
+        "func": "msg.save = false;\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 660,
+        "y": 1080,
+        "wires": [
+            [
+                "b66ad0ae279ffc76"
+            ]
+        ]
+    },
+    {
+        "id": "3e52f963e64144aa",
+        "type": "function",
+        "z": "4ff50634012ce664",
+        "name": "Compile status msg",
+        "func": "msg.msg_str = \"ℹ️ [INFO]:\\nCompiling data...\\nETA: ~45 secs\";\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 670,
+        "y": 1180,
+        "wires": [
+            [
+                "3e03ca7afc1d3c97"
+            ]
+        ]
+    },
+    {
+        "id": "3e03ca7afc1d3c97",
+        "type": "function",
+        "z": "4ff50634012ce664",
+        "name": "Telegram message",
+        "func": "let id = env.get(\"TELEGRAM_USER_ID\");\n\nmsg = {\n    payload: {\n        chatId: id,\n        type: \"message\",\n        content: msg.msg_str\n    }\n};\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 910,
+        "y": 1180,
+        "wires": [
+            [
+                "5a890464e9b6ebb5"
+            ]
+        ]
+    },
+    {
+        "id": "7189ef814b169db8",
+        "type": "telegram command",
+        "z": "4ff50634012ce664",
+        "name": "",
+        "command": "/stats",
+        "description": "",
+        "registercommand": false,
+        "language": "",
+        "scope": "default",
+        "bot": "a237809e635ce27a",
+        "strict": false,
+        "hasresponse": true,
+        "useregex": false,
+        "removeregexcommand": false,
+        "outputs": 2,
+        "x": 430,
+        "y": 1140,
+        "wires": [
+            [
+                "cfcb213c8ad1f19c",
+                "3e52f963e64144aa"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "b013e987495abc33",
+        "type": "telegram sender",
+        "z": "4ff50634012ce664",
+        "name": "",
+        "bot": "a237809e635ce27a",
+        "haserroroutput": false,
+        "outputs": 1,
+        "x": 3670,
+        "y": 1420,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "f3e39dfbf57a910f",
+        "type": "telegram sender",
+        "z": "4ff50634012ce664",
+        "name": "",
+        "bot": "a237809e635ce27a",
+        "haserroroutput": false,
+        "outputs": 1,
+        "x": 1490,
+        "y": 1580,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "5a890464e9b6ebb5",
+        "type": "telegram sender",
+        "z": "4ff50634012ce664",
+        "name": "",
+        "bot": "a237809e635ce27a",
+        "haserroroutput": false,
+        "outputs": 1,
+        "x": 1150,
+        "y": 1180,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "f56744f31a898472",
+        "type": "influxdb3-write",
+        "z": "4ff50634012ce664",
+        "influxdb": "4616ba1674dc6547",
+        "name": "passes",
+        "measurement": "passes",
+        "database": "",
+        "x": 2660,
+        "y": 600,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "0dfc487b56535870",
+        "type": "influxdb3-write",
+        "z": "4ff50634012ce664",
+        "influxdb": "4616ba1674dc6547",
+        "name": "satellites",
+        "measurement": "satellites",
+        "database": "",
+        "x": 2320,
+        "y": 500,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "3279cdc686756381",
+        "type": "influxdb3-write",
+        "z": "4ff50634012ce664",
+        "influxdb": "4616ba1674dc6547",
+        "name": "packets",
+        "measurement": "packets",
+        "database": "",
+        "x": 3140,
+        "y": 700,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e8894dbba9f2ea66",
+        "type": "influxdb3-write",
+        "z": "4ff50634012ce664",
+        "influxdb": "4616ba1674dc6547",
+        "name": "passes_stats",
+        "measurement": "passes_stats",
+        "database": "",
+        "x": 3450,
+        "y": 980,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "d48e07e2d61db1e8",
+        "type": "influxdb3-write",
+        "z": "4ff50634012ce664",
+        "influxdb": "4616ba1674dc6547",
+        "name": "packets_stats",
+        "measurement": "packets_stats",
+        "database": "",
+        "x": 3460,
+        "y": 1120,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "c0d42771cfba2779",
+        "type": "influxdb3-write",
+        "z": "4ff50634012ce664",
+        "influxdb": "4616ba1674dc6547",
+        "name": "satellites_stats",
+        "measurement": "satellites_stats",
+        "database": "",
+        "x": 3460,
+        "y": 1260,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "45ca4eed076e6262",
+        "type": "influxdb3-read",
+        "z": "4ff50634012ce664",
+        "host": "http://localhost:8181",
+        "token": "$(INFLUXDB_TOKEN)",
+        "database": "$(INFLUXDB_DB_NAME)",
+        "query": "",
+        "x": 2060,
+        "y": 980,
+        "wires": [
+            [
+                "a4d4bebdb1f77dc8"
+            ]
+        ]
+    },
+    {
+        "id": "9967a3d11f583ca6",
+        "type": "influxdb3-read",
+        "z": "4ff50634012ce664",
+        "host": "http://localhost:8181",
+        "token": "$(INFLUXDB_TOKEN)",
+        "database": "$(INFLUXDB_DB_NAME)",
+        "query": "",
+        "x": 1500,
+        "y": 500,
+        "wires": [
+            [
+                "3373fa04b79c1062"
+            ]
+        ]
+    },
+    {
+        "id": "7784ebf279f8c0ad",
+        "type": "influxdb3-read",
+        "z": "4ff50634012ce664",
+        "host": "http://localhost:8181",
+        "token": "$(INFLUXDB_TOKEN)",
+        "database": "$(INFLUXDB_DB_NAME)",
+        "query": "",
+        "x": 1740,
+        "y": 700,
+        "wires": [
+            [
+                "f684c2ae8ddd8dc8"
+            ]
+        ]
+    },
+    {
+        "id": "c7080ccf5bc510d8",
+        "type": "influxdb3-read",
+        "z": "4ff50634012ce664",
+        "host": "http://localhost:8181",
+        "token": "$(INFLUXDB_TOKEN)",
+        "database": "$(INFLUXDB_DB_NAME)",
+        "query": "",
+        "x": 2060,
+        "y": 1120,
+        "wires": [
+            [
+                "01080fa77944c9c9"
+            ]
+        ]
+    },
+    {
+        "id": "9e5f8bb727e211e4",
+        "type": "influxdb3-read",
+        "z": "4ff50634012ce664",
+        "host": "http://localhost:8181",
+        "token": "$(INFLUXDB_TOKEN)",
+        "database": "$(INFLUXDB_DB_NAME)",
+        "query": "",
+        "x": 2060,
+        "y": 1260,
+        "wires": [
+            [
+                "b228b69c5bb08bd6"
+            ]
+        ]
+    }
+]
